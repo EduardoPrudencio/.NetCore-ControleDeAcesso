@@ -9,6 +9,8 @@ namespace Security.DataAccess.Context
         {
 
         }
+
+
         public DbSet<User> Users { get; set; }
     }
 }
