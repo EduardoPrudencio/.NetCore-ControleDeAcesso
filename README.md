@@ -47,7 +47,7 @@ Ao executar o comando update-database as tabelas serão criadas no banco de dado
 
 Implementando Identity
 
-Para saber mais sobre o <a href="https://docs.microsoft.com/pt-br/aspnet/core/security/authentication/identity?view=aspnetcore-2.2&tabs=visual-studio">Identity</a>
+Para saber mais sobre o <a href="https://docs.microsoft.com/pt-br/aspnet/core/security/authentication/identity?view=aspnetcore-2.2&tabs=visual-studio" target="blank">Identity</a>
 
 Com a intenção de facilitar a compreenção no código eu trabalhei com extention Method para a configuração do identiy, Isso 
 porque nesse exemplo eu trabalhei com um Context separado para o Identity.
