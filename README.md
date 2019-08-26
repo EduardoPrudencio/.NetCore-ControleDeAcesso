@@ -63,6 +63,10 @@ No projeto da API foi criada a pasta configuration e dentro dela a classe Identi
             services.AddDbContext<AplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Security.Api")));
 
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<AplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             return services;
         }
