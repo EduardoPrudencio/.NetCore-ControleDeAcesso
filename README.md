@@ -92,6 +92,12 @@ Add-Migration Identity -Context AplicationDbContext.
 
 O comando para gerar as tabelas também precisam da definição do contexto como no exemplo abaixo.
 update-database -Context AplicationDbContext
+
+Depois é necessário colocar a seguinte linha na classe Startup:
+
+ app.UseAuthentication();
+ 
+ Vale lembrar que deve ser antes da linha de configuração do MVC.
            
 
 
