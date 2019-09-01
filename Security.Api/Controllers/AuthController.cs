@@ -53,7 +53,7 @@ namespace Security.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _singnManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
+            var result = await _singnManager.PasswordSignInAsync(loginUser.UserName, loginUser.Password, false, true);
 
             if (result.Succeeded)
                 return CustomResponse(loginUser);
