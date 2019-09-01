@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Security.Api.Extensions;
 using Security.DataAccess.Context;
 
 namespace Security.Api.Configuration
@@ -18,6 +19,7 @@ namespace Security.Api.Configuration
             services.AddDefaultIdentity<IdentityUser>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<AplicationDbContext>()
+                    .AddErrorDescriber<IdentityMensagensPortugues>()
                     .AddDefaultTokenProviders();
 
             return services;
