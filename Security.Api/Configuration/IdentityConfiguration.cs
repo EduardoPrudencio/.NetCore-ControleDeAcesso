@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Security.DataAccess.Context;
@@ -14,6 +15,10 @@ namespace Security.Api.Configuration
             services.AddDbContext<AplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Security.Api")));
 
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<AplicationDbContext>()
+                    .AddDefaultTokenProviders();
 
             return services;
         }

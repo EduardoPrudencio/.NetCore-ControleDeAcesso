@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Security.Api.Configuration;
+using Security.Business.Interfaces;
+using Security.Business.Notificacao;
 using Security.DataAccess.Context;
 
 namespace Security.Api
@@ -24,6 +26,8 @@ namespace Security.Api
             services.AddDbContext<ApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Security.Api")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddScoped<INotificador, Notificador>();
+
             services.AddIdentityConfiguration(Configuration);
         }
 
@@ -41,6 +45,8 @@ namespace Security.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseMvc();
