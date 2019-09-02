@@ -1,7 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Security.Api.Extensions;
 using Security.Api.ViewModel;
 using Security.Business.Interfaces;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Security.Api.Controllers
@@ -12,11 +18,13 @@ namespace Security.Api.Controllers
     {
         private readonly SignInManager<IdentityUser> _singnManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly AppSettings _appSeettings;
 
-        public AuthController(INotificador notificador, SignInManager<IdentityUser> singnManager, UserManager<IdentityUser> userManager) : base(notificador)
+        public AuthController(INotificador notificador, SignInManager<IdentityUser> singnManager, UserManager<IdentityUser> userManager, IOptions<AppSettings> appSeettings) : base(notificador)
         {
             _singnManager = singnManager;
             _userManager = userManager;
+            _appSeettings = appSeettings.Value;
         }
 
         [Route("create")]
@@ -56,7 +64,7 @@ namespace Security.Api.Controllers
             var result = await _singnManager.PasswordSignInAsync(loginUser.UserName, loginUser.Password, false, true);
 
             if (result.Succeeded)
-                return CustomResponse(loginUser);
+                return CustomResponse(GetJasonWebToken());
 
             if (result.IsLockedOut)
             {
@@ -67,6 +75,22 @@ namespace Security.Api.Controllers
             NotificarErro("Usuário ou senha incorretos.");
             return CustomResponse(loginUser);
 
+        }
+
+        private string GetJasonWebToken()
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSeettings.Secret);
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _appSeettings.Emissor,
+                Audience = _appSeettings.ValidIn,
+                Expires = DateTime.UtcNow.AddHours(_appSeettings.ExpirationHours),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+            });
+
+            var encodedToken = tokenHandler.WriteToken(token);
+            return encodedToken;
         }
     }
 }
