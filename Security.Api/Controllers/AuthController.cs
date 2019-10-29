@@ -46,11 +46,12 @@ namespace Security.Api.Controllers
             {
                 await _singnManager.SignInAsync(user, false); //false para guardar dados do usuário
                 return CustomResponse(registerUser);
-
             }
 
             foreach (var error in result.Errors)
                 NotificarErro(error.Description);
+
+            registerUser.Password = string.Empty;
 
             return CustomResponse(registerUser);
         }
