@@ -10,6 +10,9 @@ namespace Security.Api.ViewModel
 
         [Required(ErrorMessage = "O nome do usuário deve ser informado"), MinLength(5), MaxLength(40)]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "O email do usuário deve ser informado"), MinLength(5), MaxLength(40)]
+        public string UserEmail { get; set; }
     }
 
 }
