@@ -7,6 +7,7 @@ using Security.Api.ViewModel;
 using Security.Business.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,10 +80,10 @@ namespace Security.Api.Controllers
 
         }
 
-        private async Task<string>GetJasonWebToken(string email)
+        private async Task<LoginResponseViewModel> GetJasonWebToken(string email)
         {
-            var user      = await _userManager.FindByEmailAsync(email);
-            var claims    = await _userManager.GetClaimsAsync(user);
+            var user = await _userManager.FindByEmailAsync(email);
+            var claims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
@@ -111,7 +112,21 @@ namespace Security.Api.Controllers
             });
 
             var encodedToken = tokenHandler.WriteToken(token);
-            return encodedToken;
+
+            var response = new LoginResponseViewModel();
+
+            response.AccessToken = encodedToken;
+            response.ExpiresIn = TimeSpan.FromHours(_appSeettings.ExpirationHours).TotalSeconds;
+
+            var userToken = new UserTokenViewModel();
+
+            userToken.Id = user.Id;
+            userToken.Email = user.Email;
+            userToken.Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value });
+
+            response.UserToken = userToken; 
+        
+            return response;
         }
 
         private static long ToUnixEpochDate(DateTime date)
