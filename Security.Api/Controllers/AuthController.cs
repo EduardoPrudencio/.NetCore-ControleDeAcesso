@@ -22,7 +22,10 @@ namespace Security.Api.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSeettings;
 
-        public AuthController(INotificador notificador, SignInManager<IdentityUser> singnManager, UserManager<IdentityUser> userManager, IOptions<AppSettings> appSeettings) : base(notificador)
+        public AuthController(INotificador notificador, 
+                                SignInManager<IdentityUser> singnManager, 
+                                UserManager<IdentityUser> userManager, 
+                                IOptions<AppSettings> appSeettings,IUser user) : base(notificador,user)
         {
             _singnManager = singnManager;
             _userManager = userManager;

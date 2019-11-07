@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Security.Business.Interfaces;
 using Security.Business.Notificacao;
+using System;
 using System.Linq;
 
 namespace Security.Api.Controllers
@@ -12,9 +13,21 @@ namespace Security.Api.Controllers
     {
         private readonly INotificador _notificador;
 
-        protected MainController(INotificador notificador)
+        public readonly IUser AppUser;
+
+        public Guid UsuarioId { get; set; }
+
+        public bool UsuarioAutenticado { get; set; }
+
+        protected MainController(INotificador notificador, IUser appUser)
         {
             _notificador = notificador;
+            AppUser = appUser;
+
+            if (appUser.IsAuthenticated())
+            {
+                UsuarioAutenticado = true;
+            }
         }
 
         protected bool OperacaoValida()

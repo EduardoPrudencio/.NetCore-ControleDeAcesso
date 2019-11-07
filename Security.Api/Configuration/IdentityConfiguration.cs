@@ -39,7 +39,7 @@ namespace Security.Api.Configuration
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.RequireHttpsMetadata = false; //Passar para true apenas se puder garantir que apenas o HHTP vai ser usado
+                x.RequireHttpsMetadata = false; //Passar para true apenas se puder garantir que apenas o HHTPS vai ser usado
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
