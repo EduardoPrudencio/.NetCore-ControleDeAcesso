@@ -1,6 +1,7 @@
 FROM microsoft/dotnet:sdk AS build-env
 WORKDIR /app
 COPY *.sln ./
+COPY ApiAccessControl ./ApiAccessControl/
 COPY Security.Business/*.csproj ./Security.Business/
 COPY Security.DataAccess/*.csproj ./Security.DataAccess/
 COPY Security.DataAccess/bin/Release/netcoreapp2.2 ./Security.DataAccess/
